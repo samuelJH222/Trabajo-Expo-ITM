@@ -1,1 +1,17 @@
-//diseño
+*{
+    border: solid 1px black;
+}
+
+.encabezado{
+    background-color: azure;
+}
+.titulo{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 300%;
+    background-color: azure;
+    text-align: center;
+    text-decoration-color: cornflowerblue;
+}
+.inicio{
+    border: solid 3px gray;
+}
