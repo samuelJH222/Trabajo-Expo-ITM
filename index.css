@@ -1,35 +1,68 @@
 *{
-    border: solid 1px rgb(0, 173, 253);
+   
     background-color: rgb(150, 241, 241);
 }
 
 .encabezado{
     background-color: azure;
+    border-radius: 20px;
 }
 .titulo{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 300%;
-    background-color: azure;
+    background-color: rgb(133, 241, 241);
     text-align: center;
     text-decoration-color: cornflowerblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
 }
 .inicio{
     border: solid 3px gray;
+        border-radius: 20px;
 }
 .formulario{
     border: solid 3px gray;
     align-items: center;
     border-radius: 5%;
+    margin:  auto;
+    padding: 10px;
+    padding-left: 4%;
     
 }
 
 .formulario h2{
     text-align: center;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 32px;
+    font-size: 42px;
     color: rgb(0, 46, 250);
 }
-
-.ingreso{
-    background-color: azure;
+input[type="text"], input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 2px 0 10px 0;
+    border: 1px solid #91aeff;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+section {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2px;
+      flex-wrap: wrap;
+      overflow: hidden;
+}
+.boton {
+      background-color: #6e89ff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
 }
