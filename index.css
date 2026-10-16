@@ -1,5 +1,6 @@
 *{
-    border: solid 1px black;
+    border: solid 1px rgb(0, 173, 253);
+    background-color: rgb(150, 241, 241);
 }
 
 .encabezado{
@@ -14,4 +15,21 @@
 }
 .inicio{
     border: solid 3px gray;
+}
+.formulario{
+    border: solid 3px gray;
+    align-items: center;
+    border-radius: 5%;
+    
+}
+
+.formulario h2{
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 32px;
+    color: rgb(0, 46, 250);
+}
+
+.ingreso{
+    background-color: azure;
 }
