@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="form.css">
+    <title>Encuesta de hábitos saludables</title>
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Hábitos sanos y cotidianos</h1>
+        <p>Cuéntanos un poco sobre tus hábitos diarios.</p>
+    </header>
+
+    <main class="contenedor">
+        <form id="formEncuesta">
+            <label for="agua">¿Cuántos vasos de agua tomas al día?</label>
+            <input type="number" id="agua" min="0" max="100" step="1" required>
+
+            <label for="ejercicio">¿Cuántos días a la semana haces actividad física?</label>
+            <select id="ejercicio" required>
+                <option value="">Selecciona una opción</option>
+                <option value="0">Ningún día</option>
+                <option value="1-2">1 a 2 días</option>
+                <option value="3-4">3 a 4 días</option>
+                <option value="5-7">5 a 7 días</option>
+            </select>
+
+            <label for="sueno">¿Cuántas horas duermes al día?</label>
+            <input type="number" id="sueno" min="0" max="24" step="0.5" required>
+
+            <label for="alimentacion">¿Cómo describirías tu alimentación?</label>
+            <select id="alimentacion" required>
+                <option value="">Selecciona una opción</option>
+                <option value="variada">Variada y equilibrada</option>
+                <option value="poco-variada">Poco variada</option>
+                <option value="no-seguro">No estoy seguro/a</option>
+            </select>
+
+            <button type="submit" id="botonEnviar">Enviar respuestas</button>
+            <p id="mensaje" role="status" aria-live="polite"></p>
+        </form>
+    </main>
+
+    <script src="form.js"></script>
+</body>
+</html>
