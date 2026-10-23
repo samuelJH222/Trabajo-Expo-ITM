@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resultados | Hábitos sanos y cotidianos</title>
+
+    <link rel="stylesheet" href="resultados.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="resultados.js" defer></script>
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Hábitos sanos y cotidianos</h1>
+        <p>Resultados de la encuesta</p>
+    </header>
+
+    <main class="contenedor">
+        <section class="resumen">
+            <article class="tarjeta">
+                <h2>Participantes</h2>
+                <p id="totalParticipantes">—</p>
+            </article>
+
+            <article class="tarjeta">
+                <h2>Respuestas registradas</h2>
+                <p id="totalRespuestas">—</p>
+            </article>
+        </section>
+
+        <section class="graficas">
+            <article class="tarjeta grafica">
+                <h2>Consumo diario de agua</h2>
+                <canvas id="graficaAgua"></canvas>
+            </article>
+
+            <article class="tarjeta grafica">
+                <h2>Actividad física semanal</h2>
+                <canvas id="graficaActividad"></canvas>
+            </article>
+
+            <article class="tarjeta grafica">
+                <h2>Horas de sueño</h2>
+                <canvas id="graficaSueno"></canvas>
+            </article>
+
+            <article class="tarjeta grafica">
+                <h2>Alimentación</h2>
+                <canvas id="graficaAlimentacion"></canvas>
+            </article>
+        </section>
+
+        <p id="mensaje" role="status" aria-live="polite"></p>
+    </main>
+</body>
+</html>
