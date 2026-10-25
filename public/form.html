@@ -9,8 +9,8 @@
 </head>
 <body>
     <header class="encabezado">
-        <h1>Hábitos sanos y cotidianos</h1>
-        <p>Cuéntanos un poco sobre tus hábitos diarios.</p>
+        <h1 class="titulo">Hábitos sanos y cotidianos</h1>
+        <p class="descripcion">Cuéntanos un poco sobre tus hábitos diarios.</p>
     </header>
 
     <main class="contenedor">
@@ -37,6 +37,64 @@
                 <option value="poco-variada">Poco variada</option>
                 <option value="no-seguro">No estoy seguro/a</option>
             </select>
+            
+<fieldset class="pregunta-lugares">
+    <legend>
+        ¿En cuál de estos entornos te parecería más agradable
+        y cómodo pasar tu tiempo libre?
+    </legend>
+
+    <p class="instruccion-galeria">
+        Explora las imágenes y selecciona una opción.
+    </p>
+
+    <div class="galeria-lugares">
+
+        <label class="lugar-card">
+            <input
+                type="radio"
+                name="lugar_tiempo_libre"
+                value="gimnasio"
+                required
+            >
+            <span class="lugar-nombre">Gimnasio</span>
+            <span class="lugar-check" aria-hidden="true">✓</span>
+        </label>
+
+        <label class="lugar-card">
+            <input
+                type="radio"
+                name="lugar_tiempo_libre"
+                value="biblioteca"
+            >
+            <span class="lugar-nombre">Lectura</span>
+            <span class="lugar-check" aria-hidden="true">✓</span>
+        </label>
+
+        <label class="lugar-card">
+            <input
+                type="radio"
+                name="lugar_tiempo_libre"
+                value="caminata"
+            >
+            <span class="lugar-nombre">Caminata</span>
+            <span class="lugar-check" aria-hidden="true">✓</span>
+        </label>
+
+        <label class="lugar-card">
+            <input
+                type="radio"
+                name="lugar_tiempo_libre"
+                value="deportes"
+            >
+            <span class="lugar-nombre">Deportes</span>
+            <span class="lugar-check" aria-hidden="true">✓</span>
+        </label>
+
+    </div>
+    </fieldset>
+    
+
 
             <button type="submit" id="botonEnviar">Enviar respuestas</button>
             <p id="mensaje" role="status" aria-live="polite"></p>

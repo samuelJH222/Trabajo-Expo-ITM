@@ -134,12 +134,12 @@ app.post("/api/respuestas", async (req, res) => {
                 mensaje: "Primero debes registrarte."
             });
         }
-
         const {
-            agua,
-            ejercicio,
-            sueno,
-            alimentacion
+        agua,
+        ejercicio,
+        sueno,
+        alimentacion,
+        lugar_tiempo_libre
         } = req.body;
 
         if (

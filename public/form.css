@@ -10,32 +10,37 @@ h1{
 body {
     margin: 0;
     min-height: 100vh;
-    background-color: rgb(150, 241, 241);
+    background: linear-gradient(180deg, #D1FAE5 0%, #aeffed 55%, #F0F9FF 100%);
+    background-attachment: fixed;
+    color: #134E4A;
     font-family: Arial, sans-serif;
 }
 .encabezado {
     margin: 15px;
     padding: 20px;
     text-align: center;
-    background: linear-gradient(to right, #75d8ff, #a45fff);
+    background: linear-gradient(135deg, #0F766E 0%, #10B981 100%);
     border: 3px solid gray;
     border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(15, 118, 110, 0.30);
 }
-.encabezado h1 {
+.titulo {
     margin: 0;
-    color: #164e9b;
+    color: #FFFF;
     background-color: transparent;
 }
-.encabezado p {
+.descripcion {
     background-color: transparent;
+    color: #FFFF;
 }
 .contenedor {
     width: calc(100% - 30px);
     max-width: 550px;
     margin: 35px auto;
     padding: 25px;
-    background: linear-gradient(to right, #75d8ff, #a45fff);
-    border: 3px solid gray;
+    background-color: #FFFFFF;
+    border-top: 6px solid #10B981;
+    box-shadow: 0 12px 30px rgba(15, 118, 110, 0.15);
     border-radius: 20px;
 }
 #formEncuesta {
@@ -54,7 +59,8 @@ select {
     padding: 11px;
     border: 1px solid #91aeff;
     border-radius: 6px;
-    background-color: white;
+    background-color: #F7FEFB;
+    color: #134E4A;
     font-size: 16px;
 }
 button {
@@ -77,4 +83,159 @@ button:disabled {
 #mensaje {
     overflow-wrap: anywhere;
     background-color: transparent;
+}
+
+/* Pregunta con galería de imágenes */
+
+.pregunta-lugares {
+    border: none;
+    margin: 30px 0;
+    min-width: 0;
+}
+
+.pregunta-lugares legend {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.instruccion-galeria {
+    margin-bottom: 16px;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.galeria-lugares {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    overflow-x: auto;
+    padding: 6px 4px 16px;
+}
+
+.lugar-card {
+    flex: 0 0 75px;
+    height: 320px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 18px 12px;
+    overflow: hidden;
+
+    border: 2px solid transparent;
+    border-radius: 24px;
+    cursor: pointer;
+
+    background-size: cover;
+    background-position: center;
+
+    box-shadow: 0 5px 15px #00000020;
+    transition: flex-basis 0.4s, border-color 0.3s;
+}
+
+/* Fotografías de la galería.
+   Ajusta las rutas según dónde guardaste las imágenes. */
+
+.lugar-card:nth-child(1) {
+    background-image: url("img1.jpg");
+}
+
+.lugar-card:nth-child(2) {
+    background-image: url("img2.jpg");
+}
+
+.lugar-card:nth-child(3) {
+    background-image: url("img3.jpg");
+}
+
+.lugar-card:nth-child(4) {
+    background-image: url("img4.jpg");
+}
+
+/* Oscurece ligeramente la parte inferior para leer el título */
+
+.lugar-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        transparent 35%,
+        rgba(0, 0, 0, 0.75)
+    );
+    pointer-events: none;
+}
+
+/* Texto de cada fotografía */
+
+.lugar-nombre {
+    position: relative;
+    z-index: 1;
+    color: white;
+    font-weight: bold;
+    line-height: 1.4;
+
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Indicador de selección */
+
+.lugar-check {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    color: white;
+    background: #159e9e;
+    opacity: 0;
+}
+
+/* Expansión al pasar el cursor o seleccionar */
+
+.lugar-card:hover,
+.lugar-card.seleccionada {
+    flex-basis: 250px;
+}
+
+.lugar-card:hover .lugar-nombre,
+.lugar-card.seleccionada .lugar-nombre {
+    opacity: 1;
+}
+
+.lugar-card.seleccionada {
+    border-color: #159e9e;
+}
+
+.lugar-card.seleccionada .lugar-check {
+    opacity: 1;
+}
+
+/* Permite navegar por las opciones con el teclado */
+
+.lugar-card:focus-within {
+    outline: 3px solid #159e9e;
+    outline-offset: 3px;
+}
+
+/* Adaptación para celulares */
+
+@media (max-width: 600px) {
+    .lugar-card {
+        flex-basis: 55px;
+        height: 240px;
+        border-radius: 18px;
+    }
+
+    .lugar-card:hover,
+    .lugar-card.seleccionada {
+        flex-basis: 180px;
+    }
 }
