@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,11 +15,20 @@
 
     <main class="contenedor">
         <form id="formEncuesta">
+
             <label for="agua">¿Cuántos vasos de agua tomas al día?</label>
-            <input type="number" id="agua" min="0" max="100" step="1" required>
+            <input
+                type="number"
+                id="agua"
+                name="vasos_agua"
+                min="0"
+                max="100"
+                step="1"
+                required
+            >
 
             <label for="ejercicio">¿Cuántos días a la semana haces actividad física?</label>
-            <select id="ejercicio" required>
+            <select id="ejercicio" name="actividad_fisica" required>
                 <option value="">Selecciona una opción</option>
                 <option value="0">Ningún día</option>
                 <option value="1-2">1 a 2 días</option>
@@ -28,79 +37,207 @@
             </select>
 
             <label for="sueno">¿Cuántas horas duermes al día?</label>
-            <input type="number" id="sueno" min="0" max="24" step="0.5" required>
+            <input
+                type="number"
+                id="sueno"
+                name="horas_sueno"
+                min="0"
+                max="24"
+                step="0.5"
+                required
+            >
 
             <label for="alimentacion">¿Cómo describirías tu alimentación?</label>
-            <select id="alimentacion" required>
+            <select id="alimentacion" name="alimentacion" required>
                 <option value="">Selecciona una opción</option>
                 <option value="variada">Variada y equilibrada</option>
                 <option value="poco-variada">Poco variada</option>
                 <option value="no-seguro">No estoy seguro/a</option>
             </select>
-            
-<fieldset class="pregunta-lugares">
-    <legend>
-        ¿En cuál de estos entornos te parecería más agradable
-        y cómodo pasar tu tiempo libre?
-    </legend>
 
-    <p class="instruccion-galeria">
-        Explora las imágenes y selecciona una opción.
-    </p>
+            <fieldset class="pregunta-lugares">
+                <legend>
+                    ¿En cuál de estos entornos te parecería más agradable
+                    y cómodo pasar tu tiempo libre?
+                </legend>
 
-    <div class="galeria-lugares">
+                <p class="instruccion-galeria">
+                    Explora las imágenes y selecciona una opción.
+                </p>
 
-        <label class="lugar-card">
-            <input
-                type="radio"
-                name="lugar_tiempo_libre"
-                value="gimnasio"
-                required
-            >
-            <span class="lugar-nombre">Gimnasio</span>
-            <span class="lugar-check" aria-hidden="true">✓</span>
-        </label>
+                <div class="galeria-lugares">
 
-        <label class="lugar-card">
-            <input
-                type="radio"
-                name="lugar_tiempo_libre"
-                value="biblioteca"
-            >
-            <span class="lugar-nombre">Lectura</span>
-            <span class="lugar-check" aria-hidden="true">✓</span>
-        </label>
+                    <label class="lugar-card">
+                        <input
+                            type="radio"
+                            name="lugar_tiempo_libre"
+                            value="gimnasio"
+                            required
+                        >
+                        <span class="lugar-nombre">Gimnasio</span>
+                        <span class="lugar-check" aria-hidden="true">✓</span>
+                    </label>
 
-        <label class="lugar-card">
-            <input
-                type="radio"
-                name="lugar_tiempo_libre"
-                value="caminata"
-            >
-            <span class="lugar-nombre">Caminata</span>
-            <span class="lugar-check" aria-hidden="true">✓</span>
-        </label>
+                    <label class="lugar-card">
+                        <input
+                            type="radio"
+                            name="lugar_tiempo_libre"
+                            value="biblioteca"
+                        >
+                        <span class="lugar-nombre">Lectura</span>
+                        <span class="lugar-check" aria-hidden="true">✓</span>
+                    </label>
 
-        <label class="lugar-card">
-            <input
-                type="radio"
-                name="lugar_tiempo_libre"
-                value="deportes"
-            >
-            <span class="lugar-nombre">Deportes</span>
-            <span class="lugar-check" aria-hidden="true">✓</span>
-        </label>
+                    <label class="lugar-card">
+                        <input
+                            type="radio"
+                            name="lugar_tiempo_libre"
+                            value="caminata"
+                        >
+                        <span class="lugar-nombre">Caminata</span>
+                        <span class="lugar-check" aria-hidden="true">✓</span>
+                    </label>
 
-    </div>
-    </fieldset>
-    
+                    <label class="lugar-card">
+                        <input
+                            type="radio"
+                            name="lugar_tiempo_libre"
+                            value="deportes"
+                        >
+                        <span class="lugar-nombre">Deportes</span>
+                        <span class="lugar-check" aria-hidden="true">✓</span>
+                    </label>
 
+                </div>
+            </fieldset>
 
-            <button type="submit" id="botonEnviar">Enviar respuestas</button>
+            <fieldset class="pregunta-habitos">
+                <legend>
+                    ¿Con qué frecuencia realiza las siguientes actividades o conductas?
+                </legend>
+
+                <p class="instruccion">
+                    Seleccione las actividades que forman parte de su rutina
+                    habitual e indique con qué frecuencia las realiza.
+                </p>
+
+                <div class="habito-item">
+                    <label for="fruta">Comer al menos una fruta al día.</label>
+                    <select id="fruta" name="fruta" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+
+                <div class="habito-item">
+                    <label for="actividad">Realizar actividad física durante la semana.</label>
+                    <select id="actividad" name="actividad_habitual" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+
+                <div class="habito-item">
+                    <label for="manos">Lavarse las manos antes de comer.</label>
+                    <select id="manos" name="lavado_manos" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+
+                <div class="habito-item">
+                    <label for="sueno_regular">Mantener horarios regulares para dormir.</label>
+                    <select id="sueno_regular" name="sueno_regular" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+
+                <div class="habito-item">
+                    <label for="ropa">Acostarse con la misma ropa que utilizó durante el día.</label>
+                    <select id="ropa" name="ropa_dia" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+
+                <div class="habito-item">
+                    <label for="utensilios">
+                        Usar el mismo utensilio para limpiar distintas superficies
+                        sin lavarlo entre usos.
+                    </label>
+                    <select id="utensilios" name="utensilios_limpieza" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+
+                <div class="habito-item">
+                    <label for="bebidas">Consumir bebidas azucaradas.</label>
+                    <select id="bebidas" name="bebidas_azucaradas" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+
+                <div class="habito-item">
+                    <label for="celular">Utilizar el celular antes de dormir.</label>
+                    <select id="celular" name="celular_antes_dormir" required>
+                        <option value="" disabled selected>Seleccione una frecuencia</option>
+                        <option value="nunca">Nunca</option>
+                        <option value="a_veces">A veces</option>
+                        <option value="frecuentemente">Frecuentemente</option>
+                        <option value="siempre">Siempre</option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <div class="botones-formulario">
+                <button
+                    type="submit"
+                    id="botonEnviar"
+                    class="boton-enviar"
+                >
+                    Enviar respuestas
+                </button>
+
+                <button
+                    type="button"
+                    id="botonResultados"
+                    class="boton-resultados"
+                    onclick="window.location.href='resultados.html'"
+                >
+                    Ver resultados
+                </button>
+            </div>
+
             <p id="mensaje" role="status" aria-live="polite"></p>
+
         </form>
     </main>
 
     <script src="form.js"></script>
 </body>
 </html>
+```

@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,51 +9,153 @@
     <title>Resultados | Hábitos sanos y cotidianos</title>
 
     <link rel="stylesheet" href="resultados.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="resultados.js" defer></script>
+
+<!-- Biblioteca para crear las gráficas -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
+
     <header class="encabezado">
         <h1>Hábitos sanos y cotidianos</h1>
-        <p>Resultados de la encuesta</p>
+        <p>Panel de resultados de la encuesta</p>
     </header>
 
     <main class="contenedor">
+
         <section class="resumen">
-            <article class="tarjeta">
-                <h2>Participantes</h2>
-                <p id="totalParticipantes">—</p>
-            </article>
-
-            <article class="tarjeta">
-                <h2>Respuestas registradas</h2>
-                <p id="totalRespuestas">—</p>
-            </article>
+            <div class="tarjeta-participantes">
+                <span class="etiqueta">Personas que respondieron</span>
+                <strong id="totalParticipantes">0</strong>
+                <span class="descripcion-contador">
+                    Participantes registrados
+                </span>
+            </div>
         </section>
 
-        <section class="graficas">
-            <article class="tarjeta grafica">
-                <h2>Consumo diario de agua</h2>
-                <canvas id="graficaAgua"></canvas>
-            </article>
+        <!-- GRÁFICAS DE PASTEL -->
 
-            <article class="tarjeta grafica">
-                <h2>Actividad física semanal</h2>
-                <canvas id="graficaActividad"></canvas>
-            </article>
+        <section class="seccion-resultados">
+            <h2>Hábitos saludables</h2>
+            <p class="introduccion">
+                Distribución de las respuestas sobre el cuidado personal.
+            </p>
 
-            <article class="tarjeta grafica">
-                <h2>Horas de sueño</h2>
-                <canvas id="graficaSueno"></canvas>
-            </article>
+            <div class="rejilla-graficas">
 
-            <article class="tarjeta grafica">
-                <h2>Alimentación</h2>
-                <canvas id="graficaAlimentacion"></canvas>
-            </article>
+                <article class="tarjeta-grafica">
+                    <h3>Consumo de agua</h3>
+                    <p>¿Cuántos vasos de agua se consumen?</p>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaAgua"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Actividad física</h3>
+                    <p>Frecuencia de actividad física.</p>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaActividad"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Horas de sueño</h3>
+                    <p>Distribución de las horas de descanso.</p>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaSueno"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Alimentación</h3>
+                    <p>Distribución de las respuestas sobre alimentación.</p>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaAlimentacion"></canvas>
+                    </div>
+                </article>
+
+            </div>
         </section>
 
-        <p id="mensaje" role="status" aria-live="polite"></p>
+        <!-- GRÁFICAS DE BARRAS -->
+
+        <section class="seccion-resultados">
+            <h2>Conductas y hábitos cotidianos</h2>
+            <p class="introduccion">
+                Cantidad de personas que eligieron cada frecuencia.
+            </p>
+
+            <div class="rejilla-graficas">
+
+                <article class="tarjeta-grafica">
+                    <h3>Consumo de frutas</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaFruta"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Actividad habitual</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaActividadHabitual"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Lavado de manos</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaManos"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Regularidad del sueño</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaSuenoRegular"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Cambio de ropa diario</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaRopa"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Limpieza de utensilios</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaUtensilios"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Consumo de bebidas azucaradas</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaBebidas"></canvas>
+                    </div>
+                </article>
+
+                <article class="tarjeta-grafica">
+                    <h3>Uso del celular antes de dormir</h3>
+                    <div class="grafica-contenedor">
+                        <canvas id="graficaCelular"></canvas>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <p id="mensajeResultados" role="status" aria-live="polite">
+            Cargando resultados...
+        </p>
+
+        <footer class="pie-pagina">
+            <p>Hábitos sanos y cotidianos · Resultados de la encuesta</p>
+        </footer>
+
     </main>
+<script src="resultados.js" defer></script>
 </body>
 </html>

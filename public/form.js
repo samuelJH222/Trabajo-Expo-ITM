@@ -1,141 +1,105 @@
-/* 
-const formulario = document.getElementById("formEncuesta");
-const mensaje = document.getElementById("mensaje");
-const boton = document.getElementById("botonEnviar");
-const lugarSeleccionado = document.querySelector(
-    'input[name="lugar_tiempo_libre"]:checked'
-);
 
+document.addEventListener("DOMContentLoaded", () => {
+    const formulario = document.getElementById("formEncuesta");
+    const mensaje = document.getElementById("mensaje");
 
-opcionesLugar.forEach(opcion => {
-    opcion.addEventListener("change", () => {
-        document.querySelectorAll(".lugar-card").forEach(tarjeta => {
-            tarjeta.classList.remove("seleccionada");
-        });
-
-        opcion.closest(".lugar-card").classList.add("seleccionada");
-    });
-});
-
-
-formulario.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const respuestas = {
-        agua: Number(document.getElementById("agua").value),
-        ejercicio: document.getElementById("ejercicio").value,
-        sueno: Number(document.getElementById("sueno").value),
-        alimentacion: document.getElementById("alimentacion").value,
-        lugar_tiempo_libre: lugarSeleccionado.value,
-        nombre: nombre
-        
-    };
-
-    mensaje.textContent = "";
-    boton.disabled = true;
-
-    try {
-        const respuesta = await fetch("/api/respuestas", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(respuestas)
-        });
-
-        const datos = await respuesta.json();
-
-        if (!respuesta.ok) {
-            mensaje.textContent = datos.mensaje || "No se pudieron guardar las respuestas.";
-            return;
-        }
-
-        mensaje.textContent = datos.mensaje;
-        formulario.reset();
-    } catch (error) {
-        console.error(error);
-        mensaje.textContent = "No se pudo conectar con el servidor.";
-    } finally {
-        boton.disabled = false;
-    }
-}); */
-
-const formulario = document.getElementById("formEncuesta");
-const mensaje = document.getElementById("mensaje");
-const boton = document.getElementById("botonEnviar");
-
-const opcionesLugar = document.querySelectorAll(
-    'input[name="lugar_tiempo_libre"]'
-);
-
-// Resaltar visualmente la tarjeta seleccionada
-opcionesLugar.forEach(opcion => {
-    opcion.addEventListener("change", () => {
-        document.querySelectorAll(".lugar-card").forEach(tarjeta => {
-            tarjeta.classList.remove("seleccionada");
-        });
-
-        opcion.closest(".lugar-card").classList.add("seleccionada");
-    });
-});
-
-// Enviar las respuestas de la encuesta
-formulario.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    mensaje.textContent = "";
-
-    // Obtener el lugar seleccionado al enviar el formulario
-    const lugarSeleccionado = document.querySelector(
-        'input[name="lugar_tiempo_libre"]:checked'
-    );
-
-    // Comprobar que se haya elegido un lugar
-    if (!lugarSeleccionado) {
-        mensaje.textContent = "Selecciona un lugar antes de continuar.";
+    if (!formulario) {
+        console.error(
+            'No se encontró el formulario con id="formEncuesta". Revisa form.html.'
+        );
         return;
     }
 
-    // Recopilar las respuestas
-    const respuestas = {
-        agua: Number(document.getElementById("agua").value),
-        ejercicio: document.getElementById("ejercicio").value,
-        sueno: Number(document.getElementById("sueno").value),
-        alimentacion: document.getElementById("alimentacion").value,
-        lugar_tiempo_libre: lugarSeleccionado.value
-    };
+    formulario.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
 
-    boton.disabled = true;
+        const botonEnviar = formulario.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
 
-    try {
-        const respuesta = await fetch("/api/respuestas", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(respuestas)
-        });
-
-        const datos = await respuesta.json();
-
-        if (!respuesta.ok) {
-            mensaje.textContent =
-                datos.mensaje || "No se pudieron guardar las respuestas.";
-            return;
+        if (botonEnviar) {
+            botonEnviar.disabled = true;
         }
 
-        mensaje.textContent = datos.mensaje;
-        formulario.reset();
+        if (mensaje) {
+            mensaje.textContent = "Enviando respuestas...";
+            mensaje.classList.remove("error");
+        }
 
-        // Quitar el resaltado después de limpiar el formulario
-        document.querySelectorAll(".lugar-card").forEach(tarjeta => {
-            tarjeta.classList.remove("seleccionada");
-        });
+        try {
+            const formularioDatos = new FormData(formulario);
+            const datos = Object.fromEntries(formularioDatos.entries());
 
-    } catch (error) {
-        console.error(error);
-        mensaje.textContent = "No se pudo conectar con el servidor.";
-    } finally {
-        boton.disabled = false;
-    }
+            // Convertir los campos numéricos.
+            if (datos.vasos_agua !== undefined) {
+                datos.vasos_agua = Number(datos.vasos_agua);
+            }
+
+            if (datos.horas_sueno !== undefined) {
+                datos.horas_sueno = Number(datos.horas_sueno);
+            }
+
+            // Enviar la encuesta conservando la cookie de sesión.
+            const respuesta = await fetch("/api/respuestas", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await respuesta.json();
+
+            if (!respuesta.ok) {
+                if (respuesta.status === 401) {
+                    throw new Error(
+                        "Tu sesión no está activa. Regresa al inicio, registra tus datos y vuelve a entrar a la encuesta."
+                    );
+                }
+
+                if (respuesta.status === 409) {
+                    throw new Error(
+                        resultado.error ||
+                        "Este participante ya respondió la encuesta."
+                    );
+                }
+
+                if (respuesta.status === 400) {
+                    const faltantes = resultado.camposFaltantes?.join(", ");
+
+                    throw new Error(
+                        faltantes
+                            ? `${resultado.error} Revisa: ${faltantes}.`
+                            : resultado.error || "Revisa las respuestas ingresadas."
+                    );
+                }
+
+                throw new Error(
+                    resultado.error || "No se pudieron guardar las respuestas."
+                );
+            }
+
+            if (mensaje) {
+                mensaje.textContent = "¡Encuesta enviada correctamente!";
+                mensaje.classList.remove("error");
+            }
+
+            formulario.reset();
+
+        } catch (error) {
+            console.error("Error enviando la encuesta:", error);
+
+            if (mensaje) {
+                mensaje.textContent = error.message;
+                mensaje.classList.add("error");
+            } else {
+                alert(error.message);
+            }
+        } finally {
+            if (botonEnviar) {
+                botonEnviar.disabled = false;
+            }
+        }
+    });
 });
