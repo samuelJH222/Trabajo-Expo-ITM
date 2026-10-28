@@ -7,7 +7,13 @@ const session = require("express-session");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
+const PRODUCCION = process.env.NODE_ENV === "production";
+
+// Render está detrás de un proxy HTTPS.
+if (PRODUCCION) {
+    app.set("trust proxy", 1);
+}
 
 // --------------------------------------------------
 // MIDDLEWARE
@@ -16,16 +22,22 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+if (PRODUCCION && !process.env.SESSION_SECRET) {
+    throw new Error("Falta configurar SESSION_SECRET en Render.");
+}
+
 app.use(
     session({
         name: "habitos.sid",
-        secret: process.env.SESSION_SECRET || "habitos-sanos-sesion",
+        secret:
+            process.env.SESSION_SECRET ||
+            "clave-local-solo-para-desarrollo",
         resave: false,
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
             sameSite: "lax",
-            secure: false,
+            secure: PRODUCCION,
             maxAge: 24 * 60 * 60 * 1000
         }
     })
@@ -34,26 +46,51 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 // --------------------------------------------------
-// CONEXIÓN CON MYSQL
+// CONEXIÓN CON TI DB CLOUD / MYSQL
 // --------------------------------------------------
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST || "localhost",
+    port: Number(process.env.DB_PORT) || 3306,
     user: process.env.DB_USER || "root",
     password: process.env.DB_PASSWORD || "",
     database: process.env.DB_NAME || "habitos_saludables",
+
+    // TiDB Cloud utiliza una conexión TLS segura.
+    // Se mantiene la validación del certificado.
+    ...(PRODUCCION
+        ? {
+              ssl: {
+                  minVersion: "TLSv1.2"
+              }
+          }
+        : {}),
+
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
 
 pool.getConnection()
-    .then((conexion) => {
-        console.log("Conexión con MySQL establecida.");
-        conexion.release();
+    .then(async (conexion) => {
+        try {
+            const [filas] = await conexion.query(
+                "SELECT DATABASE() AS base"
+            );
+
+            console.log(
+                "Conexión con la base de datos establecida:",
+                filas[0].base
+            );
+        } finally {
+            conexion.release();
+        }
     })
     .catch((error) => {
-        console.error("Error conectando con MySQL:", error.message);
+        console.error(
+            "Error conectando con la base de datos:",
+            error.message
+        );
     });
 
 // --------------------------------------------------
@@ -118,7 +155,9 @@ app.post("/api/participantes", async (req, res) => {
 
         const correo = String(
             req.body.correo || req.body.email || ""
-        ).trim().toLowerCase();
+        )
+            .trim()
+            .toLowerCase();
 
         if (!nombre || !correo) {
             return res.status(400).json({
@@ -126,7 +165,8 @@ app.post("/api/participantes", async (req, res) => {
             });
         }
 
-        const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+        const correoValido =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
 
         if (!correoValido) {
             return res.status(400).json({
@@ -164,16 +204,17 @@ app.post("/api/participantes", async (req, res) => {
             participanteId = resultado.insertId;
         }
 
-        // Asociar el participante con la sesión actual.
         req.session.participanteId = participanteId;
 
-        // No responder hasta que la sesión esté guardada.
         req.session.save((error) => {
             if (error) {
-                console.error("Error guardando la sesión:", error.message);
+                console.error(
+                    "Error guardando la sesión:",
+                    error.message
+                );
 
                 return res.status(500).json({
-                    error: "El participante se registró, pero no se pudo guardar la sesión."
+                    error: "No se pudo guardar la sesión."
                 });
             }
 
@@ -184,11 +225,15 @@ app.post("/api/participantes", async (req, res) => {
 
             res.json({
                 mensaje: "Participante registrado correctamente.",
-                participanteId
+                participanteId,
+                continuar: "/form.html"
             });
         });
     } catch (error) {
-        console.error("Error registrando participante:", error.message);
+        console.error(
+            "Error registrando participante:",
+            error.message
+        );
 
         res.status(500).json({
             error: "No se pudo registrar el participante."
@@ -204,14 +249,10 @@ app.post("/api/respuestas", async (req, res) => {
     try {
         const participanteId = req.session.participanteId;
 
-        // La sesión debe proceder del registro inicial.
         if (!participanteId) {
-            console.warn(
-                "POST /api/respuestas rechazado: no hay participante en la sesión."
-            );
-
             return res.status(401).json({
-                error: "No se encontró tu sesión. Regresa a la página inicial y vuelve a ingresar."
+                error:
+                    "No se encontró tu sesión. Regresa a la página inicial y vuelve a ingresar."
             });
         }
 
@@ -306,7 +347,6 @@ app.post("/api/respuestas", async (req, res) => {
             });
         }
 
-        // Evitar respuestas duplicadas.
         const [previas] = await pool.query(
             "SELECT id FROM respuestas WHERE participante_id = ?",
             [participanteId]
@@ -362,10 +402,14 @@ app.post("/api/respuestas", async (req, res) => {
             mensaje: "Encuesta guardada correctamente."
         });
     } catch (error) {
-        console.error("Error guardando respuestas:", error);
+        console.error(
+            "Error guardando respuestas:",
+            error.message
+        );
 
         res.status(500).json({
-            error: "No se pudieron guardar las respuestas. Revisa la consola del servidor y las columnas de la tabla respuestas."
+            error:
+                "No se pudieron guardar las respuestas. Revisa la consola del servidor y las columnas de la tabla respuestas."
         });
     }
 });
@@ -374,6 +418,6 @@ app.post("/api/respuestas", async (req, res) => {
 // INICIAR SERVIDOR
 // --------------------------------------------------
 
-app.listen(PORT, () => {
-    console.log(`Servidor funcionando en http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
